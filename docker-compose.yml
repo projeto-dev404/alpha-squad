@@ -12,6 +12,7 @@ services:
       - .:/app
     command: >
       sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    restart: on-failure:10
     depends_on:
       - mysql
 
@@ -24,6 +25,7 @@ services:
       - "3306:3306"
     expose:
       - "3306"
+    command: mysqld --default-authentication-plugin=mysql_native_password
     volumes:
       - mysql_data:/var/lib/mysql
 
