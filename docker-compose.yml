@@ -2,24 +2,26 @@ version: '3'
 
 services:
   web:
+    container_name: web
     build: .
+    env_file:
+      - .env.dev
     ports:
       - "8000:8000"
     volumes:
       - .:/app
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     depends_on:
       - mysql
 
   mysql:
+    container_name: mysql
     image: mysql:8.1.0
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    env_file:
+      - .env.dev
     ports:
-    - "3306:3306"
+      - "3306:3306"
     expose:
       - "3306"
     volumes:
