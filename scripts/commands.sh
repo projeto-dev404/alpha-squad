@@ -5,6 +5,6 @@ set -e
 
 wait_psql.sh
 collectstatic.sh
-create_superuser.sh
 migrate.sh
+create_superuser.sh
 runserver.sh
