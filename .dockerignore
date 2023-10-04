@@ -18,6 +18,7 @@ __pycache__
 dist
 docs
 env
+venv
 logs
 stats
 Dockerfile
