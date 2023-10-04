@@ -39,14 +39,16 @@ EXPOSE 8000
 #   chmod -R 755 /data/web/media && \
 #   chmod -R +x /scripts
 
+# Creates DUSER and it's number is 1000
 RUN python -m venv /venv && \
     /venv/bin/pip install --upgrade pip && \
     /venv/bin/pip install -r /djangoapp/requirements.txt && \
     adduser --disabled-password --no-create-home duser && \
     mkdir -p /data/web/static /data/web/media && \
-    chown -R duser:duser /venv /data/web/static /data/web/media && \
+    chown -R duser:duser /venv /data /djangoapp && \
+    # chown -R 1000:1000 /djangoapp && \
     chmod -R 755 /data/web/static /data/web/media && \
-    chmod -R +x /scripts
+    chmod -R +x /scripts 
 
 # Adiciona a pasta scripts e venv/bin 
 # no $PATH do container.
