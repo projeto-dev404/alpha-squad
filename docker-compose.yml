@@ -1,10 +1,58 @@
-version: '3'
+version: "3.9"
+
+# volumes:
+#   postgres-data:
+#   static-data:
+#   media-data:
 
 services:
-  web:
-    build: .
+  djangoapp:
+    user: duser
+    container_name: djangoapp
+    restart: always
+    # networks:
+    #   - mynetwork
+    # network_mode: host # Use host network mode
+    build:
+      context: .
     ports:
-      - "8000:8000"
+      - 8000:8000
     volumes:
-      - .:/app
-    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+      - ./djangoapp:/djangoapp
+      - static-data:/data/web/static
+      - media-data:/data/web/media
+      # - ./data/web/media:/data/web/media
+    env_file:
+      - ./dotenv_files/.env
+    depends_on:
+      - db
+  db:
+    # user: duser
+    container_name: psql
+
+    # network_mode: host # Use host network mode
+    image: postgres:13-alpine
+    restart: always
+    # user: postgres
+    volumes:
+      # - ./data/postgres/data:/var/lib/postgresql/data/
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - ./dotenv_files/.env
+    ports:
+      - 5432:5432
+  pg-admin:
+    container_name: pg-admin
+    image: dpage/pgadmin4:7.5
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+      - PGADMIN_LISTEN_PORT=5050
+    ports:
+      - 5050:5050
+
+volumes:
+  djangoapp:
+  static-data:
+  media-data:
+  postgres-data:
