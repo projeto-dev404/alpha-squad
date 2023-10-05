@@ -52,7 +52,6 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
@@ -60,9 +59,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-# MIGRATION_MODULES = {
-#     'users': 'users.migrations',
-# }
+AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -94,8 +91,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'site_setup.context_processors.context_processor_example',
-                # 'site_setup.context_processors.site_setup',
             ],
         },
     },
@@ -175,7 +170,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-AXES_ENABLED = True
+AXES_ENABLED = False
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = None  # 1 Hora
 AXES_RESET_ON_SUCCESS = True

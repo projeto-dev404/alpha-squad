@@ -1,67 +1,62 @@
 import uuid
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-
-# Create your models here.
+from django.utils import timezone
 
 
-class User(models.Model):
-    displayName = models.CharField(max_length=50, default='')
-    email = models.EmailField(max_length=100, null=False, default='')
+class CustomUserManager(UserManager):
+    def _create_user(self, name, email, password, **extra_fields):
+        if not email:
+            raise ValueError("You have not provided a valid e-mail")
+        if not name:
+            raise ValueError("You have not provided a name")
 
-    def get_user_email(self):
-        return self.email
+        email = self.normalize_email(email)
+        user = self.model(name=name, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
 
-    def get_user_name(self):
-        return self.displayName
+        return user
+
+    def create_user(self, name=None, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_superuser', False)
+        return self._create_user(name, email, password, **extra_fields)
+
+    def create_superuser(self, name=None, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self._create_user(name, email, password, **extra_fields)
+
+
+class User(AbstractBaseUser, PermissionsMixin):
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(blank=True, default='', unique=True)
+    name = models.CharField(max_length=255, blank=True, default='')
+
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+
+    date_joined = models.DateTimeField(default=timezone.now)
+    last_login = models.DateTimeField(blank=True, null=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'email'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['name']
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
     def __str__(self):
-        return self.id
+        return self.name or str(self.id)
 
-# import uuid
-# from django.db import models
-# from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
+    def get_full_name(self):
+        return self.name
 
-
-# class CustomUserManager(BaseUserManager):
-#     def create_user(self, email, password=None, **extra_fields):
-#         if not email:
-#             raise ValueError('The Email field must be set')
-#         email = self.normalize_email(email)
-#         user = self.model(email=email, **extra_fields)
-#         user.set_password(password)
-#         user.save(using=self._db)
-#         return user
-
-#     def create_superuser(self, email, password=None, **extra_fields):
-#         extra_fields.setdefault('is_staff', True)
-#         extra_fields.setdefault('is_superuser', True)
-
-#         if extra_fields.get('is_staff') is not True:
-#             raise ValueError('Superuser must have is_staff=True.')
-#         if extra_fields.get('is_superuser') is not True:
-#             raise ValueError('Superuser must have is_superuser=True.')
-
-#         return self.create_user(email, password, **extra_fields)
-
-
-# class User(AbstractBaseUser, PermissionsMixin):
-#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#     displayName = models.CharField(max_length=50, default='')
-#     email = models.EmailField(max_length=100, unique=True)
-#     is_active = models.BooleanField(default=True)
-#     is_staff = models.BooleanField(default=False)
-
-#     objects = CustomUserManager()
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
-
-#     def __str__(self):
-#         return str(self.id)
-
-#     def get_user_email(self):
-#         return self.email
-
-#     def get_user_name(self):
-#         return self.displayName
+    def get_short_name(self):
+        return self.name or self.email.split('@')[0]
