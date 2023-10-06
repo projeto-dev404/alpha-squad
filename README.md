@@ -1,4 +1,4 @@
-# <img alt="CodeMentor" src="https://media.licdn.com/dms/image/D4D0BAQHE8bsrmJVrYg/company-logo_200_200/0/1695757217802?e=1704931200&v=beta&t=Lz0CsYmhEB8P4C1DU7pFW0wYzJkpd7gwP2tX8LwaWpo" />
+# <div align="center"><a href="https://discord.gg/sQYnuvF8uu"><img src="https://media.licdn.com/dms/image/D4D0BAQHE8bsrmJVrYg/company-logo_200_200/0/1695757217802?e=1704931200&v=beta&t=Lz0CsYmhEB8P4C1DU7pFW0wYzJkpd7gwP2tX8LwaWpo" alt="logo" width="180"/></a></div>
 
 # CodeMentor - Backend
 
@@ -20,7 +20,7 @@ docker-compose build
 docker-compose up
 ```
 
-Certifique-se de definir as variáveis de ambiente adequadas no arquivo .env de acordo com o .env.example antes de executar o contêiner.
+Certifique-se de definir as variáveis de ambiente adequadas no arquivo .env de acordo com o .env-example antes de executar o contêiner.
 
 ### Observações
 
@@ -38,11 +38,28 @@ Certifique-se de definir as variáveis de ambiente adequadas no arquivo .env de 
       "email": "usuario@example.com",
       "password": "1234567890"
   }
+  ```
+  
+- **Resposta (JSON):**
+  ```json
+  {
+      "name": "Novo Usuário",
+      "email": "usuario@example.com",
+      "id": "sa4f89-4894-asf8-6548-54fsa894f87d"
+  }
+  ```
 
 ### Obter os dados do usuário logado atualmente
 
 - **Método:** GET
 - **Endpoint:** /auth/users/me
+- **Headers:**
+
+| Chave         | Valor                  |
+|---------------|------------------------|
+| Authorization | token "auth_token"     |
+
+
 - **Resposta (JSON):**
 ```json
 {
@@ -56,6 +73,12 @@ Certifique-se de definir as variáveis de ambiente adequadas no arquivo .env de 
 
 - **Método:** GET
 - **Endpoint:** /auth/users/:id
+- **Headers:**
+
+| Chave         | Valor                  |
+|---------------|------------------------|
+| Authorization | token "auth_token"     |
+
 - **Resposta (JSON):**
 ```json
 {
@@ -88,6 +111,12 @@ Certifique-se de definir as variáveis de ambiente adequadas no arquivo .env de 
 
 - **Método:** POST
 - **Endpoint:** /auth/token/logout
+- **Headers:**
+
+| Chave         | Valor                  |
+|---------------|------------------------|
+| Authorization | token "auth_token"     |
+
 - **Resposta (JSON):**
 ```json
 {
