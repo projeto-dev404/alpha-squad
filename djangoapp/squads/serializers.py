@@ -2,17 +2,15 @@ from rest_framework import serializers
 from .models import Squad, UsersOnSquads
 from users.models import User
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSquadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'name', 'email')
-        ref_name = 'UserSerializer'
 
 class UsersOnSquadsSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSquadSerializer()
     role = serializers.CharField(source='userRoleOnSquad')
     squad = serializers.SerializerMethodField()
-    ref_name = 'UsersOnSquadsSerializer'
 
     class Meta:
         model = UsersOnSquads
