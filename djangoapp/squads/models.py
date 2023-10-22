@@ -5,6 +5,7 @@ from users.models import User
 # Create your models here.
 
 class Squad(models.Model):
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -15,7 +16,7 @@ class Squad(models.Model):
 class UsersOnSquads(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     userRoleOnSquad = models.CharField(max_length=255)
-    squad = models.ForeignKey(Squad, on_delete=models.CASCADE)
+    squad = models.ForeignKey(Squad, related_name='users_on_squad', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.name} on {self.squad.name}"
