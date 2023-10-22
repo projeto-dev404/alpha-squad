@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers, permissions
 from users.views import UserViewSet
+from squads.views import SquadViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -23,6 +24,7 @@ schema_view = get_schema_view(
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'squads', SquadViewSet, basename='squad')
 
 urlpatterns = [
     path('', include(router.urls)),
