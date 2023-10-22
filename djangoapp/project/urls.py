@@ -9,10 +9,12 @@ from drf_spectacular.views import (
 )
 from rest_framework import permissions, routers
 from users.views import UserViewSet
+from squads.views import SquadViewSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
+router.register(r'squads', SquadViewSet, basename='squad')
 
 urlpatterns = [
     path('', include(router.urls)),
