@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     # Swagger
-    'drf_yasg',
+    'drf_spectacular',
 
     # Djoser
     'djoser',
@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 AUTH_USER_MODEL = 'users.User'
@@ -198,3 +199,22 @@ AXES_ENABLED = False
 AXES_FAILURE_LIMIT = 5
 AXES_COOLOFF_TIME = None  # 1 Hora
 AXES_RESET_ON_SUCCESS = True
+
+# DRF Spectacular settings
+# https://drf-spectacular.readthedocs.io/en/latest/settings.html
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Snippets API',
+    'DESCRIPTION': 'Test description',
+    'VERSION': 'v1',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'EXTERNAL_DOCS': {
+        'description': 'Terms of service',
+        'url': 'https://www.google.com/policies/terms/',
+    },
+    'CONTACT': {
+        'email': 'contact@snippets.local'
+    },
+    'LICENSE': {
+        'name': 'BSD License',
+    }
+}
