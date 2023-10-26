@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'users',
     'stacks',
     
+    
+    
 
     # Djangorestframework
     'rest_framework',
