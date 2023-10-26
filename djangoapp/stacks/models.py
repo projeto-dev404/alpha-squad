@@ -26,8 +26,8 @@ class Stacks(models.Model):
 ]
 
     id = models.AutoField(primary_key=True,)
-    escolha = models.CharField(max_length=30,choices=STACK_CHOICES, default="DEFAULT VALUE",)
+    nome = models.CharField(max_length=30,choices=STACK_CHOICES, default="DEFAULT VALUE",)
    
 
     def __str__(self):
-        return f'{self.escolha}' ' - ' f'{self.id}'
+        return f'{self.nome}' ' - ' f'{self.id}'
