@@ -1,11 +1,14 @@
 from rest_framework import serializers
-from .models import Squad, UsersOnSquads
 from users.models import User
+
+from .models import Squad, UsersOnSquads
+
 
 class UserSquadSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'name', 'email')
+
 
 class UsersOnSquadsSerializer(serializers.ModelSerializer):
     user = UserSquadSerializer()
@@ -30,13 +33,16 @@ class UsersOnSquadsSerializer(serializers.ModelSerializer):
             'role': representation['role']
         }
 
+
 class SquadSerializer(serializers.ModelSerializer):
     users_on_squad = UsersOnSquadsSerializer(many=True, read_only=True)
 
     class Meta:
         model = Squad
-        fields = ('id', 'name', 'description', 'users_on_squad')
+        fields = ('id', 'name', 'description',
+                  'users_on_squad', 'stacks')
         lookup_field = 'id'
+
 
 class SquadListSerializer(serializers.ModelSerializer):
     class Meta:
