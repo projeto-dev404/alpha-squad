@@ -8,13 +8,15 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 from rest_framework import permissions, routers
-from users.views import UserViewSet
 from squads.views import SquadViewSet
+from stacks.views import StackViewSet
+from users.views import UserViewSet
 
 # Routers provide an easy way of automatically determining the URL conf.
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'squads', SquadViewSet, basename='squad')
+router.register(r'stacks', StackViewSet, basename='stack')
 
 urlpatterns = [
     path('', include(router.urls)),
